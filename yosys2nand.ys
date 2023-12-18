@@ -1,0 +1,30 @@
+
+#check obious problems in the current design 8combinatorila loops, conflicts, etc.
+check;
+
+#opt_clean with less verbose
+clean;
+
+# translate processes to netlists
+proc;
+
+#extract and optimize finite state machines
+fsm; opt;
+
+#translate memories to basic cells
+memory; opt;
+
+
+techmap;
+synth
+dfflibmap -liberty /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/cells.lib
+abc -liberty /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/cells.lib
+techmap -map /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/all2nand.v
+
+#functional reduction
+freduce;
+opt_clean;
+
+check
+
+stat
