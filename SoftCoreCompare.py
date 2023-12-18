@@ -10,6 +10,22 @@ if d.is_file():
         defaults = json.loads(j.read())
 print(defaults)
 
+fpgas = {'ice40':{'sel':True},
+         'ecp5':{'sel':True},
+         'gowin':{'sel':True},
+         'cyclonev':{'sel':True},
+         'xilinx7':{'sel':True}
+         }
+
+projects = {}
+
+d = Path('.')
+for p in d.iterdir():
+    if p.is_dir():
+        projects[p.name] = {'sel':True}
+
+print(projects)
+
 from tkinter import *
 from tkinter import ttk
 root = Tk()

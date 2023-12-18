@@ -13,3 +13,47 @@ of LaTex compatible tables and graphs.
 While the "MIT license" is used for the original material in this project, each soft
 core is in the form of Verilog files copied (and sometimes slightly patched) from
 various projects. These files use the license of the project they came from.
+
+## FPGAS
+
+### ICE40
+
+### ECP5
+
+### Gowin
+
+### Cyclone V
+
+### Xilinx 7
+
+## NANDs
+
+## ASIC
+
+## RISC-V Soft Cores
+
+### Glacial
+
+### SERV
+
+### PicoRV32
+
+### VexRiscv
+
+### DarkRiscv
+
+## Other Soft Cores
+
+### MCPU
+
+### Fento 16
+
+### J0 
+
+### ukp
+
+### 6502
+
+### ZPU Avalanche
+
+### Baby 8
