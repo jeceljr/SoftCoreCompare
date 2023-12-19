@@ -41,15 +41,90 @@ complexity of the circuits when implemented as integrated circuits. Files
 
 ## FPGAS
 
-### ICE40
+Field Programmable Gate Arrays can implement any digital circuit up to a size
+that depends on the particular FPGA device. It is possible to start with a high
+level description of a processor (using a hardware description language such as
+Verilog, VHDL, Chisel, SpinalHDL and others) and have either an FPGA specific
+tool or an open source one (for only a few different FPGAs) to translate that
+into a netlist of the basic blocks implemented by the FPGAs. A placement tool
+will assign each block in the design to a specific one in the FPGA such that
+the next step, routing, works as well as possible. Routing uses the configurable
+connection network in the FPGA (a little like early telephone exchange systems)
+to actually connect the placed blocks. This is encoded into a "bit file" that
+is loaded by the FPGA each time it is turned on to actually implement the
+circuit.
 
-### ECP5
+In this comparison we only take into account how many of each of the basic
+blocks of the FPGA a given soft core uses when its Verilog sources are
+translated with the open source tool Yosys. The basic blocks are:
 
-### Gowin
+- LUT: LookUp Tables implement all of the logic in the FPGAs. They can be
+classified by how many address lines they need. A LUT4 has 16 words of a
+single bit each and needs 4 bit addresses. A LUT6 has 64 bits and needs
+6 address lines. A larger LUT can always do the job of a smaller one by
+either tying unused address lines to 0 or 1 or else duplicating the bits
+such that the output doesn't depend on that address line. Several smaller
+LUTs can be combined into one larger one and several FPGAs offer special
+"mux" blocks to make this more efficient without using even more extra
+LUTs.
 
-### Cyclone V
+- Registers: the LUTs are purely combinational circuits so having an
+optional flip-flop circuit at its output allows sequential circuits to
+be implemented. Normally one register is associated with one LUT, but
+there tend to be some extra registers as part of the i/o pads.
 
-### Xilinx 7
+- DSP: Digital Signal Processing blocks are hardware implementations of
+multiplication circuits. Otherwise a very large number of LUTs would be
+required to implement this operation (which has many more uses beyond
+digital signal processing).
+
+- distributed memory: each LUT is actually a very small Random Access
+Memory (RAM) but is normally not changed after the initial configuration
+when the FPGA is turned on. A little extra circuit can allow all of the
+LUTs or some fraction of them to be used as actual read/write memories.
+
+- block memory: the area needed to store a bit in a register or even in
+a LUT is very large compared to a dedicated RAM circuit. Since the 1990s
+FPGAs have included a number of memory blocks that can efficiently handle
+a medium to large number of bits.
+
+Other FPGA blocks include input and output buffers, clock buffers, carry
+circuits to convert LUTs into adder circuits, the multiplexers already
+mentioned for combining several small LUTs into one larger logical one
+and a few that might be unique to each type of FPGAs. For a high level
+comparison it doesn't make sense to count these.
+
+### [ICE40](https://www.latticesemi.com/iCE40)
+
+The startup Silicon Blue took advantage of the expiration of key FPGA
+patents to introduce their own very basic offering. Their focus was on
+smaller FPGAs with low cost and low energy requirements. They were bought
+by Lattice Semiconductor and a second generation was designed moving from
+the original 65nm process to a more modern 40nm further reducing the
+energy use.
+
+### [ECP5](https://www.latticesemi.com/en/Products/FPGAandCPLD/ECP5)
+
+Al evolution of the earlier ECP, ECP2 and ECP3 FPGAs, this mid range
+family is one of the lowest cost options with high speed serial interfaces.
+
+### [Gowin](https://www.gowinsemi.com/en/)
+
+This Chinese company was the first to have success with FPGAs in other
+countries with many variations on the classic FPGAs. One unique feature
+is the use of spare LUTs to help with the routing. How much this is used
+varies from one project to the next and this is why the numbers are not
+always relatively the same compared to other types of FPGAs.
+
+### [Cyclone V](https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/v.html)
+
+The Cyclone family was the low end of Altera FPGAs and the V generation was
+the last one released before Altera was bought by Intel.
+
+### [Xilinx 7](https://docs.xilinx.com/v/u/en-US/7-series-product-selection-guide)
+
+The 28nm generation of Xilinx FPGas is still very popular even after it was
+bought by AMD and two new generations were introduced.
 
 ## NANDs
 
