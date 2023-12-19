@@ -120,16 +120,61 @@ in the *rtl/* directory.
 
 ## Other Soft Cores
 
+Even with all variation possible with the RISC-V instruction set, there are
+applications where other designs are a better option. That is particularly
+true when executing programs.
+
 ### MCPU
+
+With only 4 instructions and addressing only 64 bytes of memory, the MCPU is
+very small and yet is Turing complete.
+
+The Verilog file was copied from [the original repository](https://github.com/cpldcpu/MCPU.git)
+in the *verilog/* directory.
 
 ### Fento 16
 
+In the [8 Bit Workshop](http://8bitworkshop.com/) online videogame development system
+there is an option to design games at the hardware level using Verilog. The examples
+grow in complexity and two simple processors, the 8 bit Femto 8 and the 16 bit Femto 16,
+are introduced and games are converted from pure hardware to assembly prograams for
+them.
+
+The Verilog file was copied from [the original repository](https://github.com/sehugg/8bitworkshop.git)
+in the *presets/verilog/* directory.
+
 ### J0 
 
-### ukp
+The [PDF describing the J1 soft core](https://excamera.com/files/j1.pdf) optimized for
+small programs in the Forth language was the inspiration for projects like
+[SwapForth](https://github.com/jamesbowman/swapforth) by the same author and
+the [Forth CPU](https://github.com/howerj/forth-cpu) computer system.
 
-### 6502
+The Gameduino project adds an FPGA based video output for Arduino boards and includes
+the J0 processor, as slight modification of the J1.
+
+The Verilog file was copied from [a fork of the original repository](https://github.com/Godzil/gameduino)
+in the *fpga/* directory.
+
+### ukp and 6502
+
+A NES (Famicom) emulator for the Sipeed Tang Nano 20K FPGA board includes two processors.
+The 6502 is needed to run the actual games while the limited ukp handles USB mice,
+keyboards or game controllers.
+
+The Verilog files were copied to the respective projects from
+[the original repository](https://github.com/nand2mario/nestang.git)
+in the *src/* directory.
 
 ### ZPU Avalanche
+
+The ZPU was designed to use the least FPGA possible while being fully compatible
+with all the GNU programming tools, including GCC. The idea is that on an FPGA
+even C is more of a scripting language as the heavy processing will be done by
+hardware blocks.
+
+Th Avalanche project translated the original VHDL implementation to System Verilog.
+The System Verilog files were copied from [the original repository](https://github.com/sergev/zpu-avalanche.git)
+in the top directory.
 
 ### Baby 8
