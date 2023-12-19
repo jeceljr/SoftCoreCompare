@@ -1,5 +1,5 @@
 {
 	"excludefpgas":[],
-	"excludeprojects":[],
+	"excludeprojects":["j0","baby8"],
 	"autogen":[]
 }
