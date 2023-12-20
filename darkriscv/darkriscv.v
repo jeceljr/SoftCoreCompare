@@ -52,7 +52,7 @@
 
 // configuration file
 
-`include "../rtl/config.vh"
+//`include "../rtl/config.vh"
 
 module darkriscv
 //#(
@@ -521,24 +521,24 @@ module darkriscv
         PC   <= /*XRES ? `__RESETPC__ :*/ HLT ? PC : NXPC; // current program counter
 
 `ifndef __YOSYS__
-
-        if(EBRK)
-        begin
-            $display("breakpoint at %x",PC);
-            $stop();
-        end
-        
-        if(!FLUSH && IDATA===32'dx)
-        begin
-            $display("invalid IDATA at %x",PC);
-            $stop();  
-        end
-        
-        if(LCC && !HLT && DATAI===32'dx)
-        begin
-            $display("invalid DATAI@%x at %x",DADDR,PC);
-            $stop();
-        end
+//
+//        if(EBRK)
+//        begin
+//            $display("breakpoint at %x",PC);
+//            $stop();
+//        end
+//        
+//        if(!FLUSH && IDATA===32'dx)
+//        begin
+//            $display("invalid IDATA at %x",PC);
+//            $stop();  
+//        end
+//        
+//        if(LCC && !HLT && DATAI===32'dx)
+//        begin
+//            $display("invalid DATAI@%x at %x",DADDR,PC);
+//            $stop();
+//        end
 `endif
 
     end

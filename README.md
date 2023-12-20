@@ -32,7 +32,12 @@ downloaded.
 
 [Yosys](https://github.com/YosysHQ/yosys.git) must be installed and running
 correctly since it is invoked by the program to synthesize each project for
-each FPGA to collected the desired statistics.
+each FPGA to collected the desired statistics. Compiled with the default
+configuration, Yosys didn't work from Python3 so in *Makefile* this line
+was changed from 0: "ENABLE_PYOSYS := 1". The default installation put the
+yosys-abc command in */usr/local/bin* but the synth_ice40 command looked for
+it in */usr/bin* when called from Python (it worked in the Yosys command line).
+Making a copy in */usr/bin* is not the right solution, but seems to work.
 
 Yosys needs two files from the [OnlyNandYosysSynth](https://github.com/OuDret/OnlyNandYosysSynth.git)
 to be able to convert the soft cores to NAND gates, which is a good proxy of the
@@ -193,6 +198,9 @@ It can be optionally made smaller by reducing the number of registers as per RV3
 The Verilog file was copied from [the original repository](https://github.com/darklife/darkriscv.git)
 in the *rtl/* directory.
 
+The include in file *darkriscv.v* was commented out, as was the part after the
+"ifndef __YOSYS__" since that doesn't work when called from Python.
+
 ## Other Soft Cores
 
 Even with all variation possible with the RISC-V instruction set, there are
@@ -240,6 +248,9 @@ keyboards or game controllers.
 The Verilog files were copied to the respective projects from
 [the original repository](https://github.com/nand2mario/nestang.git)
 in the *src/* directory.
+
+Modules MUXCY and XORCY are names that conflict with a built-in blocks for Xilinx FPGAs,
+so the ones in files *compat.v* and *cpu.v" were renamed to xMUXCY and xXORCY.
 
 ### ZPU Avalanche
 
