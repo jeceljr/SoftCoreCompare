@@ -17,9 +17,9 @@ memory; opt;
 
 techmap;
 synth
-dfflibmap -liberty /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/cells.lib
-abc -liberty /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/cells.lib
-techmap -map /opt/asic/OnlyNandYosysSynth/OnlyNandYosysSynth/all2nand.v
+dfflibmap -liberty ../cells.lib
+abc -liberty ../cells.lib
+techmap -map ../all2nand.v
 
 #functional reduction
 freduce;
