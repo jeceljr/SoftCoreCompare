@@ -128,7 +128,49 @@ def collectFPGAs():
     print(unknown_cells)
 
 def collectNAND():
-    print("unimplemented")
+    for a,p in projects.items():
+        if p['sel'].get():
+            os.chdir(a)
+            d = Path('config.json')
+            if d.is_file():
+                with d.open() as conf:
+                    pconf = json.loads(conf.read())
+                if a not in results:
+                    results[a] = {}
+                if 'NAND' not in results[a]:
+                    results[a]['NAND'] = 0
+                design = ys.Design()
+                for vf in pconf['VERILOG_FILES']:
+                    if vf[-3:] == ".sv":
+                        svopt = " -sv "
+                    else:
+                        svopt = ""
+                    ys.run_pass("read_verilog "+svopt+vf, design);
+                ys.run_pass("hierarchy -top "+pconf['DESIGN_NAME'], design)
+                ys.run_pass("flatten", design)
+                ys.run_pass("check", design)
+                ys.run_pass("clean", design)
+                ys.run_pass("proc", design)
+                ys.run_pass("fsm", design)
+                ys.run_pass("opt", design)
+                ys.run_pass("memory", design)
+                ys.run_pass("opt", design)
+                ys.run_pass("techmap", design)
+                ys.run_pass("synth", design)
+                ys.run_pass("dfflibmap -liberty ../cells.lib", design)
+                ys.run_pass("abc -liberty ../cells.lib", design)
+                ys.run_pass("techmap -map ../all2nand.v", design)
+                ys.run_pass("freduce", design)
+                ys.run_pass("opt_clean", design)
+                ys.run_pass("check", design)
+                for module in design.selected_whole_modules_warn():
+                    for cell in module.selected_cells():
+                        ct = cell.type.str()
+                        if ct == '\\NAND':
+                            results[a]['NAND'] += 1
+                        else:
+                            unknown_cells[a] = ct
+            os.chdir('..')
 
 def collectASIC():
     print("to do")

@@ -234,6 +234,9 @@ them.
 The Verilog file was copied from [the original repository](https://github.com/sehugg/8bitworkshop.git)
 in the *presets/verilog/* directory.
 
+The file was renamed to *cpu16.sv* since it needs System Verilog features and it
+ALU module was renamed to xALU to not conflict with the Gowin built-in block.
+
 ### J0 
 
 The [PDF describing the J1 soft core](https://excamera.com/files/j1.pdf) optimized for
