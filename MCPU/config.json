@@ -1,0 +1,15 @@
+{
+    "DESIGN_NAME": "mcpu",
+    "VERILOG_FILES": ["MCPU_0.1a.v"],
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 100,
+    "PDK": "sky130A",
+    "pdk::sky130A": {
+        "MAX_FANOUT_CONSTRAINT": 6,
+        "FP_CORE_UTIL": 40,
+        "PL_TARGET_DENSITY_PCT": "expr::($FP_CORE_UTIL + 10.0)",
+        "scl::sky130_fd_sc_hd": {
+            "CLOCK_PERIOD": 15
+        }
+    }
+}

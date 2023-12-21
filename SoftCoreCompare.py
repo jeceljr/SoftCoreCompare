@@ -37,7 +37,7 @@ fpgas = {'ice40':{'synth':"synth_ice40",
                   'dsp':[],
                   'dmem':['\\RAM16SDP4','\\SPX9','\\SDPX9'],
                   'bmem':[],
-                  'ignore':['\\VCC','\\ALU','\\GND','\\MUX2_LUT5','\\MUX2_LUT6','\\MUX2_LUT7','\\MUX2_LUT8','\\IBUF','\\OBUF','\\IOBUF']},
+                  'ignore':['\\VCC','\\ALU','\\GND','\\MUX2_LUT5','\\MUX2_LUT6','\\MUX2_LUT7','\\MUX2_LUT8','\\IBUF','\\OBUF','\\IOBUF','\\SP']},
          'cyclonev':{'synth':"synth_intel_alm -family cyclonev",
                   'lut':['\\MISTRAL_ALUT3','\\MISTRAL_ALUT4','\\MISTRAL_ALUT5','\\MISTRAL_ALUT2','\\MISTRAL_ALUT6'],
                   'reg':['\\MISTRAL_FF'],
@@ -76,14 +76,21 @@ unknown_cells = {}
 def clearRes():
     results.clear()
 
-def collectFPGA(proj,fname,f,res):
+def collectFPGA(proj,pconf,fname,f,res):
     design = ys.Design()
     res['lut'] = 0
     res['reg'] = 0
     res['dsp'] = 0
     res['dmem'] = 0
     res['bmem'] = 0
-    ys.run_pass("read_verilog *", design);
+    for vf in pconf['VERILOG_FILES']:
+      if vf[-3:] == ".sv":
+          svopt = " -sv "
+      else:
+          svopt = ""
+      ys.run_pass("read_verilog "+svopt+vf, design);
+    ys.run_pass("hierarchy -top "+pconf['DESIGN_NAME'], design)
+    ys.run_pass("flatten", design)
     ys.run_pass(f['synth'], design)
     for module in design.selected_whole_modules_warn():
       for cell in module.selected_cells():
@@ -105,13 +112,17 @@ def collectFPGAs():
     for a,p in projects.items():
         if p['sel'].get():
             os.chdir(a)
-            for b,f in fpgas.items():
-                if f['sel'].get():
-                    if a not in results:
-                        results[a] = {}
-                    if b not in results[a]:
-                        results[a][b] = {}
-                    collectFPGA(a,b,f,results[a][b])
+            d = Path('config.json')
+            if d.is_file():
+               with d.open() as conf:
+                   pconf = json.loads(conf.read())
+               for b,f in fpgas.items():
+                   if f['sel'].get():
+                       if a not in results:
+                           results[a] = {}
+                       if b not in results[a]:
+                           results[a][b] = {}
+                       collectFPGA(a,pconf,b,f,results[a][b])
             os.chdir('..')
     print(results)
     print(unknown_cells)

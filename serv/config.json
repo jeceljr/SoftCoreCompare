@@ -1,0 +1,18 @@
+{
+    "DESIGN_NAME": "serv_top",
+    "VERILOG_FILES": ["serv_alu.v","serv_bufreg.v","serv_csr.v","serv_decode.v","serv_mem_if.v",
+	              "serv_rf_ram_if.v","serv_rf_top.v","serv_synth_wrapper.v",
+                      "serv_aligner.v","serv_bufreg2.v","serv_compdec.v","serv_ctrl.v","serv_immdec.v",
+		      "serv_rf_if.v","serv_rf_ram.v","serv_state.v","serv_top.v"],
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 100,
+    "PDK": "sky130A",
+    "pdk::sky130A": {
+        "MAX_FANOUT_CONSTRAINT": 6,
+        "FP_CORE_UTIL": 40,
+        "PL_TARGET_DENSITY_PCT": "expr::($FP_CORE_UTIL + 10.0)",
+        "scl::sky130_fd_sc_hd": {
+            "CLOCK_PERIOD": 15
+        }
+    }
+}
