@@ -22,31 +22,36 @@ fpgas = {'ice40':{'synth':"synth_ice40",
                   'reg':['\\SB_DFFSR','\\SB_DFFESR','\\SB_DFF','\\SB_DFFE','\\SB_DFFESS','\\SB_DFFSS'],
                   'dsp':[],
                   'dmem':[],
-                  'bmem':['\\SB_RAM40_4K']},
+                  'bmem':['$_TBUF_','\\SB_RAM40_4K'],
+                  'ignore':['\\SB_CARRY']},
          'ecp5':{'synth':"synth_ecp5",
                   'lut':['\\LUT4'],
                   'reg':['\\TRELLIS_FF'],
                   'dsp':['\\MULT18X18D'],
                   'dmem':['\\TRELLIS_DPR16X4','\\DP16KD'],
-                  'bmem':[]},
+                  'bmem':[],
+                  'ignore':['$_TBUF_','\\CCU2C','\\PFUMX','\\L6MUX21']},
          'gowin':{'synth':"synth_gowin",
-                  'lut':['\\LUT4'],
+                  'lut':['\\LUT4','\\LUT3','\\LUT1','\\LUT2'],
                   'reg':['\\DFFR','\\DFFRE','\\DFFE','\\DFF','\\DFFSE','\\DFFS'],
                   'dsp':[],
                   'dmem':['\\RAM16SDP4','\\SPX9','\\SDPX9'],
-                  'bmem':[]},
+                  'bmem':[],
+                  'ignore':['\\VCC','\\ALU','\\GND','\\MUX2_LUT5','\\MUX2_LUT6','\\MUX2_LUT7','\\MUX2_LUT8','\\IBUF','\\OBUF','\\IOBUF']},
          'cyclonev':{'synth':"synth_intel_alm -family cyclonev",
                   'lut':['\\MISTRAL_ALUT3','\\MISTRAL_ALUT4','\\MISTRAL_ALUT5','\\MISTRAL_ALUT2','\\MISTRAL_ALUT6'],
                   'reg':['\\MISTRAL_FF'],
                   'dsp':['\\MISTRAL_MUL18X18'],
                   'dmem':['\\MISTRAL_MLAB'],
-                  'bmem':['\\MISTRAL_M10K']},
+                  'bmem':['\\MISTRAL_M10K'],
+                  'ignore':['$_TBUF_','\\MISTRAL_ALUT_ARITH','\\MISTRAL_OB','\\MISTRAL_IB','\\MISTRAL_IO','\\MISTRAL_NOT','\\MISTRAL_CLKBUF']},
          'xilinx7':{'synth':"synth_xilinx",
                   'lut':['\\LUT4','\\LUT3','\\LUT1','\\LUT2','\\LUT6','\\LUT5'],
                   'reg':['\\FDRE','\\FDSE'],
                   'dsp':['\\DSP48E1'],
                   'dmem':['\\RAM32M'],
-                  'bmem':['\\RAMB18E1']}
+                  'bmem':['\\RAMB18E1'],
+                  'ignore':['\\IBUF','\\OBUF','\\IOBUF','\\MUXF7','\\INV','\\CARRY4','\\BUFG','\\MUXF8']}
          }
 
 for n,f in fpgas.items():
@@ -66,13 +71,13 @@ for p in d.iterdir():
 numboxes = max(len(fpgas),len(projects))
 
 results = {}
+unknown_cells = {}
 
 def clearRes():
     results.clear()
 
 def collectFPGA(proj,fname,f,res):
     design = ys.Design()
-    os.chdir(proj)
     res['lut'] = 0
     res['reg'] = 0
     res['dsp'] = 0
@@ -85,19 +90,21 @@ def collectFPGA(proj,fname,f,res):
           ct = cell.type.str()
           if ct in f['lut']:
               res['lut'] += 1
-          if ct in f['reg']:
+          elif ct in f['reg']:
               res['reg'] += 1
-          if ct in f['dsp']:
+          elif ct in f['dsp']:
               res['dsp'] += 1
-          if ct in f['dmem']:
+          elif ct in f['dmem']:
               res['dmem'] += 1
-          if ct in f['bmem']:
+          elif ct in f['bmem']:
               res['bmem'] += 1
-    os.chdir('..')
+          elif ct not in f['ignore']:
+              unknown_cells[ct] = fname
 
 def collectFPGAs():
     for a,p in projects.items():
         if p['sel'].get():
+            os.chdir(a)
             for b,f in fpgas.items():
                 if f['sel'].get():
                     if a not in results:
@@ -105,7 +112,9 @@ def collectFPGAs():
                     if b not in results[a]:
                         results[a][b] = {}
                     collectFPGA(a,b,f,results[a][b])
+            os.chdir('..')
     print(results)
+    print(unknown_cells)
 
 def collectNAND():
     print("unimplemented")
