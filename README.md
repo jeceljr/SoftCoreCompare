@@ -44,6 +44,14 @@ to be able to convert the soft cores to NAND gates, which is a good proxy of the
 complexity of the circuits when implemented as integrated circuits. Files
 *cells.lib* and *all2nand.v* were copied from the directory *OnlyNandYosysSynth/*.
 
+The [Open Lane 2](https://github.com/efabless/openlane2) tool is used to generate
+chip layouts for each soft cores (making them into hard cores) so the resulting
+area can be compared. There are several ways to install this, but only the option
+using the Nix package tool has been tested in this project. The optional
+[Volare](https://github.com/efabless/volare) PDK management system was used to
+select the right version of the Skywater 130nm PDK to generate the hardware for
+the cores.
+
 ## FPGAS
 
 Field Programmable Gate Arrays can implement any digital circuit up to a size
@@ -199,7 +207,7 @@ The Verilog file was copied from [the original repository](https://github.com/da
 in the *rtl/* directory.
 
 The include in file *darkriscv.v* was commented out, as was the part after the
-"ifndef __YOSYS__" since that doesn't work when called from Python.
+"ifndef \_\_YOSYS\_\_" since that doesn't work when called from Python.
 
 ## Other Soft Cores
 
