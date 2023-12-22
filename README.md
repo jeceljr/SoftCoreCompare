@@ -141,6 +141,16 @@ bought by AMD and two new generations were introduced.
 
 ## NANDs
 
+It is possible to build any digital circuits entirely with NAND logic gates or
+with just NOR gates (the case for the AGC, the Apollo Guidence Computer which
+landed on the Moon). Before the Field Programmable Gate Arrays (FPGAs) many
+projects used Gate Arrays. These were chips which had a large number of NAND
+gates, the same for all clients, and the metal layer was specific for each
+client.
+
+Translating a design to NAND gates is a good way to get an idea of the
+complexity of that design relative to others. 
+
 ## ASIC
 
 ## RISC-V Soft Cores

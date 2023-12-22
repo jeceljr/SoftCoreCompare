@@ -124,8 +124,6 @@ def collectFPGAs():
                            results[a][b] = {}
                        collectFPGA(a,pconf,b,f,results[a][b])
             os.chdir('..')
-    print(results)
-    print(unknown_cells)
 
 def collectNAND():
     for a,p in projects.items():
@@ -175,18 +173,41 @@ def collectNAND():
 def collectASIC():
     print("to do")
 
+def allAuto():
+    print("generate all automatic reports from default.json")
+
+def nextAuto():
+    print("generate the next report defined in default.json")
+
+def newReport():
+    print("Results:")
+    print(results)
+    print("Unknown Cells (please fix program if not empty):")
+    print(unknown_cells)
+
 frm = ttk.Frame(root, padding=10)
-frm.grid()
-r = 0
+frm.pack()
+select = ttk.Frame(frm)
+select.pack(side=TOP)
+c1 = ttk.Frame(select)
+c1.pack(side=LEFT,fill=Y,expand=1)
+ttk.Label(c1, text="   Selected FPGAs   ").pack(side=TOP)
 for n,f in fpgas.items():
-    ttk.Checkbutton(frm, text=n, variable=f['sel'], onvalue=True, offvalue=False,command=clearRes).grid(column=0, row=r)
-    r += 1
-r = 0
+    ttk.Checkbutton(c1, text=n, variable=f['sel'], onvalue=True, offvalue=False,command=clearRes).pack(side=TOP,fill=X,expand=1)
+c2 = ttk.Frame(select)
+c2.pack(side=LEFT)
+ttk.Label(c2, text="   Selected Soft Cores   ").pack(side=TOP)
 for n,p in projects.items():
-    ttk.Checkbutton(frm, text=n, variable=p['sel'], onvalue=True, offvalue=False,command=clearRes).grid(column=1, row=r)
-    r += 1
-ttk.Button(frm, text="Collect FPGA data", command=collectFPGAs).grid(column=1, row=numboxes)
-ttk.Button(frm, text="Collect NAND data", command=collectNAND).grid(column=1, row=numboxes+1)
-ttk.Button(frm, text="Collect ASIC data", command=collectASIC).grid(column=1, row=numboxes+2)
-ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=numboxes+3)
+    ttk.Checkbutton(c2, text=n, variable=p['sel'], onvalue=True, offvalue=False,command=clearRes).pack(side=TOP,fill=X,expand=1)
+collect = ttk.Frame(frm)
+collect.pack(side=TOP)
+ttk.Button(collect, text="Collect FPGA data", command=collectFPGAs).pack(side=LEFT)
+ttk.Button(collect, text="Collect NAND data", command=collectNAND).pack(side=LEFT)
+ttk.Button(collect, text="Collect ASIC data", command=collectASIC).pack(side=LEFT)
+ttk.Button(frm, text="Quit", command=root.destroy).pack(side=TOP)
+report = ttk.Frame(frm)
+report.pack(side=TOP)
+ttk.Button(report, text="All Auto", command=allAuto).pack(side=LEFT)
+ttk.Button(report, text="Next Auto", command=nextAuto).pack(side=LEFT)
+ttk.Button(report, text="New Report", command=newReport).pack(side=LEFT)
 root.mainloop()
