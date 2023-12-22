@@ -183,7 +183,47 @@ def collectNAND():
     report.pack(side=TOP)
 
 def collectASIC():
-    print("to do")
+    for a,p in projects.items():
+        if p['sel'].get():
+            os.chdir(a)
+            d = Path('config.json')
+            if d.is_file():
+                with d.open() as conf:
+                    pconf = json.loads(conf.read())
+                if a not in results:
+                    results[a] = {}
+                if 'ASIC' not in results[a]:
+                    results[a]['ASIC'] = {}
+                stat = results[a]['ASIC']
+                r = Path('runs/compare/final/metrics.json')
+                if not r.is_file():
+                    Classic = Flow.factory.get("Classic")
+                    flow = Classic(pconf,design_dir=".")
+                    flow.start(tag="compare")
+                r = Path('runs/compare/final/metrics.json')
+                if r.is_file():
+                    with r.open() as m:
+                        metrics = json.loads(m.read())
+                        stat['power'] = metrics['power__total']
+                        stat['die_area'] = metrics['design__die__area']
+                        stat['core_area'] = metrics['design__core__area']
+                        dbox = metrics['design__die__bbox'].split()
+                        cbox = metrics['design__core__bbox'].split()
+                        stat['die_width'] = float(dbox[2])-float(dbox[0])
+                        stat['die_height'] = float(dbox[3])-float(dbox[1])
+                        stat['core_width'] = float(cbox[2])-float(cbox[0])
+                        stat['core_height'] = float(cbox[3])-float(cbox[1])
+                        setup = metrics['timing__setup__ws__corner:max_ss_100C_1v60']
+                        cp = pconf['CLOCK_PERIOD']
+                        try:
+                            cp = pconf['pdk::sky130A']['scl::sky130_fd_sc_hd']['CLOCK_PERIOD']
+                        except KeyError:
+                            pass
+                        comb_delay = cp/2 - cp/5 - 0.25 - setup
+                        mcp = (0.25+comb_delay)/0.3
+                        stat['clockMHz'] = 1000/mcp
+            os.chdir('..')
+    report.pack(side=TOP)
 
 def allAuto():
     print("generate all automatic reports from default.json")
