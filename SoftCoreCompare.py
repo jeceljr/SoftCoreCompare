@@ -75,6 +75,7 @@ unknown_cells = {}
 
 def clearRes():
     results.clear()
+    report.pack_forget()
 
 def collectFPGA(proj,pconf,fname,f,res):
     design = ys.Design()
@@ -124,6 +125,9 @@ def collectFPGAs():
                            results[a][b] = {}
                        collectFPGA(a,pconf,b,f,results[a][b])
             os.chdir('..')
+    print("Unknown Cells (please fix program if not empty):")
+    print(unknown_cells)
+    report.pack(side=TOP)
 
 def collectNAND():
     for a,p in projects.items():
@@ -169,6 +173,7 @@ def collectNAND():
                         else:
                             unknown_cells[a] = ct
             os.chdir('..')
+    report.pack(side=TOP)
 
 def collectASIC():
     print("to do")
@@ -182,8 +187,6 @@ def nextAuto():
 def newReport():
     print("Results:")
     print(results)
-    print("Unknown Cells (please fix program if not empty):")
-    print(unknown_cells)
 
 frm = ttk.Frame(root, padding=10)
 frm.pack()
@@ -210,4 +213,5 @@ report.pack(side=TOP)
 ttk.Button(report, text="All Auto", command=allAuto).pack(side=LEFT)
 ttk.Button(report, text="Next Auto", command=nextAuto).pack(side=LEFT)
 ttk.Button(report, text="New Report", command=newReport).pack(side=LEFT)
+clearRes()
 root.mainloop()
