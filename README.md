@@ -52,6 +52,11 @@ using the Nix package tool has been tested in this project. The optional
 select the right version of the Skywater 130nm PDK to generate the hardware for
 the cores.
 
+If the program can't find OpenLane then it won't show the 'Collect ASIC Data"
+button. Despite having a working installation via Nix I had to install it
+again via "python3 -m pip install --upgrade openlane" for the application to
+find it.
+
 ## FPGAS
 
 Field Programmable Gate Arrays can implement any digital circuit up to a size

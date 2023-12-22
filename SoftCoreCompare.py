@@ -8,6 +8,13 @@ from tkinter import *
 from tkinter import ttk
 root = Tk()
 
+asics = True
+
+try:
+    from openlane.flows import Flow
+except ImportError:
+    asics = False
+
 defaults = {'excludefpgas': [], 'excludeprojects': [], 'autogen': []}
 
 import json
@@ -43,7 +50,7 @@ fpgas = {'ice40':{'synth':"synth_ice40",
                   'reg':['\\MISTRAL_FF'],
                   'dsp':['\\MISTRAL_MUL18X18'],
                   'dmem':['\\MISTRAL_MLAB'],
-                  'bmem':['\\MISTRAL_M10K'],
+                  'bmem':['\\MISTRAL_M10K','\\MISTRAL_M20K_SDP'],
                   'ignore':['$_TBUF_','\\MISTRAL_ALUT_ARITH','\\MISTRAL_OB','\\MISTRAL_IB','\\MISTRAL_IO','\\MISTRAL_NOT','\\MISTRAL_CLKBUF']},
          'xilinx7':{'synth':"synth_xilinx",
                   'lut':['\\LUT4','\\LUT3','\\LUT1','\\LUT2','\\LUT6','\\LUT5'],
@@ -206,7 +213,8 @@ collect = ttk.Frame(frm)
 collect.pack(side=TOP)
 ttk.Button(collect, text="Collect FPGA data", command=collectFPGAs).pack(side=LEFT)
 ttk.Button(collect, text="Collect NAND data", command=collectNAND).pack(side=LEFT)
-ttk.Button(collect, text="Collect ASIC data", command=collectASIC).pack(side=LEFT)
+if asics:
+    ttk.Button(collect, text="Collect ASIC data", command=collectASIC).pack(side=LEFT)
 ttk.Button(frm, text="Quit", command=root.destroy).pack(side=TOP)
 report = ttk.Frame(frm)
 report.pack(side=TOP)
