@@ -1,5 +1,5 @@
 {
-    "DESIGN_NAME": "serv_top",
+    "DESIGN_NAME": "serv_synth_wrapper",
     "VERILOG_FILES": ["serv_alu.v","serv_bufreg.v","serv_csr.v","serv_decode.v","serv_mem_if.v",
 	              "serv_rf_ram_if.v","serv_rf_top.v","serv_synth_wrapper.v",
                       "serv_aligner.v","serv_bufreg2.v","serv_compdec.v","serv_ctrl.v","serv_immdec.v",
@@ -10,9 +10,6 @@
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,
         "FP_CORE_UTIL": 40,
-        "PL_TARGET_DENSITY_PCT": "expr::($FP_CORE_UTIL + 10.0)",
-        "scl::sky130_fd_sc_hd": {
-            "CLOCK_PERIOD": 25
-        }
+        "PL_TARGET_DENSITY_PCT": "expr::($FP_CORE_UTIL + 10.0)"
     }
 }
