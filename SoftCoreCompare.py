@@ -49,7 +49,7 @@ fpgas = {'ice40':{'synth':"synth_ice40",
                          '\\DFFNS','\\DFFNSE','\\DFFP''\\DFFNP','\\DFFC',
                          '\\DFFNC','\\DFFPE','\\DFFNPE','\\DFFCE','\\DFFNCE'],
                   'dsp':[],
-                  'dmem':['\\RAM16SDP4','\\RAM16SDP1','\\RAM16SDP2','\\RAM16SDP4']
+                  'dmem':['\\RAM16SDP4','\\RAM16SDP1','\\RAM16SDP2','\\RAM16SDP4'],
                   'bmem':['\\SPX9','\\DP','\\SP','\\DPX9','\\SDP','\\SDPX9'],
                   'ignore':['\\VCC','\\ALU','\\GND','\\MUX2_LUT5','\\MUX2_LUT6','\\MUX2_LUT7','\\MUX2_LUT8','\\IBUF','\\OBUF','\\IOBUF','\\SP']},
          'cyclonev':{'synth':"synth_intel_alm -family cyclonev",
@@ -244,6 +244,7 @@ def newReport():
 
 frm = ttk.Frame(root, padding=10)
 frm.pack()
+root.title("Soft Core Compare")
 select = ttk.Frame(frm)
 select.pack(side=TOP)
 c1 = ttk.Frame(select)

@@ -47,7 +47,9 @@ complexity of the circuits when implemented as integrated circuits. Files
 The [Open Lane 2](https://github.com/efabless/openlane2) tool is used to generate
 chip layouts for each soft cores (making them into hard cores) so the resulting
 area can be compared. There are several ways to install this, but only the option
-using the Nix package tool has been tested in this project. The optional
+using the Nix package tool has been tested in this project and it worked well
+when invoked directly, but as explained below it wasn't able to bee called from
+the Python program. The optional
 [Volare](https://github.com/efabless/volare) PDK management system was used to
 select the right version of the Skywater 130nm PDK to generate the hardware for
 the cores.
@@ -55,7 +57,14 @@ the cores.
 If the program can't find OpenLane then it won't show the 'Collect ASIC Data"
 button. Despite having a working installation via Nix I had to install it
 again via "python3 -m pip install --upgrade openlane" for the application to
-find it.
+find it. To make this work also required compiling 
+[Verilator](https://github.com/verilator/verilator) from the sources
+since the version in the Debian repository (4.x) was not new enough. 
+[OpenSTA](https://github.com/The-OpenROAD-Project/OpenSTA)
+was also built from the sources. 
+[OpenRoad](https://github.com/The-OpenROAD-Project/OpenROAD.git) itself is
+also needed. It seems to contain OpenSTA so that is probably not needed
+separately.
 
 ## FPGAS
 
@@ -154,9 +163,23 @@ gates, the same for all clients, and the metal layer was specific for each
 client.
 
 Translating a design to NAND gates is a good way to get an idea of the
-complexity of that design relative to others. 
+complexity of that design relative to others
 
 ## ASIC
+
+Application Specific Integrated Circuits are those designed to be used in
+one particular product, as opposed to standard integrated circuits that are
+sold to many companies to be used in many products.
+
+While the cost of each ASIC is normally a fraction of the cost of an FPGA
+capable of handling the same design, the production of the ASIC has some
+high NRE (Non Recurring Engineering) costs so a reasonably high volume is
+needed for the ASIC to be more viable economically than a FPGA. Besides
+cost, the ASIC might operate at a higher frequency and with lower power
+than the FPGA which can be important factors in some products.
+
+For a given fabrication technology, we can compare processor cores by
+the area they take up, their operating frequency and the power they use.
 
 ## RISC-V Soft Cores
 
@@ -290,3 +313,20 @@ The System Verilog files were copied from [the original repository](https://gith
 in the top directory.
 
 ### Baby 8
+
+Designed to help implement the [Shin JAMMA](https://github.com/jeceljr/shin_jamma) interface
+to adapt FPGA projects to specific boards, the goal of Baby8 is to use as few FPGA
+resources as possible to leave more for the user's actual project.
+
+An 8 bit architecture is a good match for the applications of interfacing to PS/2 or
+USB keyboards, mice and game controllers as well as providing an abstract interface
+to files on a FAT32 formatted SD memory card.
+
+In an FPGA distributed memory built from LUTs is more dense than individual flip-flops.
+Baby8 takes advantage of that at a cost of reduced performance by having the program
+counter be part of the register bank. In an ASIC there is no advantage of doing this
+as they would be the same flip-flops either way.
+
+The Verilog file was copied from [the original repository](https://github.com/jeceljr/baby8)
+in the *rtl/experiments/* directory. For now only the datapath is being used, not the
+whole processor.
