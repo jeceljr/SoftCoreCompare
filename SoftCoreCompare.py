@@ -77,7 +77,7 @@ projects = {}
 
 d = Path('.')
 for p in d.iterdir():
-    if p.is_dir() and p.name != '.git':
+    if p.is_dir() and p.name != '.git' and p.name != 'openlane_run':
         b = BooleanVar()
         b.set(p.name not in defaults['excludeprojects'])
         projects[p.name] = {'sel':b}

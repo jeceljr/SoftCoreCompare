@@ -163,7 +163,7 @@ gates, the same for all clients, and the metal layer was specific for each
 client.
 
 Translating a design to NAND gates is a good way to get an idea of the
-complexity of that design relative to others
+complexity of that design relative to others.
 
 ## ASIC
 

@@ -1,2 +1,3 @@
 *.tex
 runs/
+openlane_run/
