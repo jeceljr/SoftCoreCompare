@@ -2,7 +2,7 @@
     "DESIGN_NAME": "darkriscv",
     "VERILOG_FILES": ["config.vh","darkriscv.v"],
     "CLOCK_PORT": "CLK",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 24.2,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

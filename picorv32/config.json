@@ -2,7 +2,7 @@
     "DESIGN_NAME": "picorv32",
     "VERILOG_FILES": ["picorv32.v"],
     "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 17,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

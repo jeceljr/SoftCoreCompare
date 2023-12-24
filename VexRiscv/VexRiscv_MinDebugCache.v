@@ -89,7 +89,7 @@ module VexRiscv (
   wire                IBusCachedPlugin_cache_io_cpu_prefetch_isValid;
   wire                IBusCachedPlugin_cache_io_cpu_fetch_isValid;
   wire                IBusCachedPlugin_cache_io_cpu_fetch_isStuck;
-  wire                IBusCachedPlugin_cache_io_cpu_fetch_isRemoved;
+//  wire                IBusCachedPlugin_cache_io_cpu_fetch_isRemoved;
   wire                IBusCachedPlugin_cache_io_cpu_decode_isValid;
   wire                IBusCachedPlugin_cache_io_cpu_decode_isStuck;
   wire                IBusCachedPlugin_cache_io_cpu_decode_isUser;
@@ -487,7 +487,7 @@ module VexRiscv (
   wire                IBusCachedPlugin_mmuBus_rsp_allowExecute;
   wire                IBusCachedPlugin_mmuBus_rsp_exception;
   wire                IBusCachedPlugin_mmuBus_rsp_refilling;
-  wire                IBusCachedPlugin_mmuBus_rsp_bypassTranslation;
+//  wire                IBusCachedPlugin_mmuBus_rsp_bypassTranslation;
   wire                IBusCachedPlugin_mmuBus_end;
   wire                IBusCachedPlugin_mmuBus_busy;
   reg                 DBusSimplePlugin_memoryExceptionPort_valid;
@@ -1268,7 +1268,7 @@ module VexRiscv (
     .io_cpu_prefetch_pc                       (IBusCachedPlugin_iBusRsp_stages_0_input_payload       ), //i
     .io_cpu_fetch_isValid                     (IBusCachedPlugin_cache_io_cpu_fetch_isValid           ), //i
     .io_cpu_fetch_isStuck                     (IBusCachedPlugin_cache_io_cpu_fetch_isStuck           ), //i
-    .io_cpu_fetch_isRemoved                   (IBusCachedPlugin_cache_io_cpu_fetch_isRemoved         ), //i
+//    .io_cpu_fetch_isRemoved                   (IBusCachedPlugin_cache_io_cpu_fetch_isRemoved         ), //i
     .io_cpu_fetch_pc                          (IBusCachedPlugin_iBusRsp_stages_1_input_payload       ), //i
     .io_cpu_fetch_data                        (IBusCachedPlugin_cache_io_cpu_fetch_data              ), //o
     .io_cpu_fetch_mmuRsp_physicalAddress      (IBusCachedPlugin_mmuBus_rsp_physicalAddress           ), //i
@@ -1279,7 +1279,7 @@ module VexRiscv (
     .io_cpu_fetch_mmuRsp_allowExecute         (IBusCachedPlugin_mmuBus_rsp_allowExecute              ), //i
     .io_cpu_fetch_mmuRsp_exception            (IBusCachedPlugin_mmuBus_rsp_exception                 ), //i
     .io_cpu_fetch_mmuRsp_refilling            (IBusCachedPlugin_mmuBus_rsp_refilling                 ), //i
-    .io_cpu_fetch_mmuRsp_bypassTranslation    (IBusCachedPlugin_mmuBus_rsp_bypassTranslation         ), //i
+//    .io_cpu_fetch_mmuRsp_bypassTranslation    (IBusCachedPlugin_mmuBus_rsp_bypassTranslation         ), //i
     .io_cpu_fetch_physicalAddress             (IBusCachedPlugin_cache_io_cpu_fetch_physicalAddress   ), //o
     .io_cpu_decode_isValid                    (IBusCachedPlugin_cache_io_cpu_decode_isValid          ), //i
     .io_cpu_decode_isStuck                    (IBusCachedPlugin_cache_io_cpu_decode_isStuck          ), //i
@@ -4309,7 +4309,7 @@ module InstructionCache (
   input      [31:0]   io_cpu_prefetch_pc,
   input               io_cpu_fetch_isValid,
   input               io_cpu_fetch_isStuck,
-  input               io_cpu_fetch_isRemoved,
+//  input               io_cpu_fetch_isRemoved,
   input      [31:0]   io_cpu_fetch_pc,
   output     [31:0]   io_cpu_fetch_data,
   input      [31:0]   io_cpu_fetch_mmuRsp_physicalAddress,
@@ -4320,7 +4320,7 @@ module InstructionCache (
   input               io_cpu_fetch_mmuRsp_allowExecute,
   input               io_cpu_fetch_mmuRsp_exception,
   input               io_cpu_fetch_mmuRsp_refilling,
-  input               io_cpu_fetch_mmuRsp_bypassTranslation,
+//  input               io_cpu_fetch_mmuRsp_bypassTranslation,
   output     [31:0]   io_cpu_fetch_physicalAddress,
   input               io_cpu_decode_isValid,
   input               io_cpu_decode_isStuck,
@@ -4404,7 +4404,7 @@ module InstructionCache (
   reg                 decodeStage_mmuRsp_allowExecute;
   reg                 decodeStage_mmuRsp_exception;
   reg                 decodeStage_mmuRsp_refilling;
-  reg                 decodeStage_mmuRsp_bypassTranslation;
+//  reg                 decodeStage_mmuRsp_bypassTranslation;
   wire                when_InstructionCache_l459_1;
   reg                 decodeStage_hit_valid;
   wire                when_InstructionCache_l459_2;
@@ -4590,7 +4590,7 @@ module InstructionCache (
       decodeStage_mmuRsp_allowExecute <= io_cpu_fetch_mmuRsp_allowExecute;
       decodeStage_mmuRsp_exception <= io_cpu_fetch_mmuRsp_exception;
       decodeStage_mmuRsp_refilling <= io_cpu_fetch_mmuRsp_refilling;
-      decodeStage_mmuRsp_bypassTranslation <= io_cpu_fetch_mmuRsp_bypassTranslation;
+//      decodeStage_mmuRsp_bypassTranslation <= io_cpu_fetch_mmuRsp_bypassTranslation;
     end
     if(when_InstructionCache_l459_1) begin
       decodeStage_hit_valid <= fetchStage_hit_valid;

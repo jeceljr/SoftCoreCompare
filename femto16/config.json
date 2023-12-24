@@ -2,7 +2,7 @@
     "DESIGN_NAME": "CPU16",
     "VERILOG_FILES": ["cpu16.sv"],
     "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 15.4,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

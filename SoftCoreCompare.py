@@ -211,24 +211,24 @@ def collectASIC():
                 if r.is_file():
                     with r.open() as m:
                         metrics = json.loads(m.read())
-                        stat['power'] = metrics['power__total']
-                        stat['die_area'] = metrics['design__die__area']
-                        stat['core_area'] = metrics['design__core__area']
+                        stat['power (W)'] = metrics['power__total']
+                        stat['die_area (µm²)'] = metrics['design__die__area']
+                        stat['core_area (µm²)'] = metrics['design__core__area']
                         dbox = metrics['design__die__bbox'].split()
                         cbox = metrics['design__core__bbox'].split()
-                        stat['die_width'] = float(dbox[2])-float(dbox[0])
-                        stat['die_height'] = float(dbox[3])-float(dbox[1])
-                        stat['core_width'] = float(cbox[2])-float(cbox[0])
-                        stat['core_height'] = float(cbox[3])-float(cbox[1])
+                        stat['die_width (µm)'] = float(dbox[2])-float(dbox[0])
+                        stat['die_height (µm)'] = float(dbox[3])-float(dbox[1])
+                        stat['core_width (µm)'] = float(cbox[2])-float(cbox[0])
+                        stat['core_height(µm)'] = float(cbox[3])-float(cbox[1])
                         setup = metrics['timing__setup__ws__corner:max_ss_100C_1v60']
                         cp = pconf['CLOCK_PERIOD']
                         try:
                             cp = pconf['pdk::sky130A']['scl::sky130_fd_sc_hd']['CLOCK_PERIOD']
                         except KeyError:
                             pass
-                        comb_delay = cp/2 - cp/5 - 0.25 - setup
-                        mcp = (0.25+comb_delay)/0.3
-                        stat['clockMHz'] = 1000/mcp
+                        stat['actualClock (MHz)'] = 1000/cp
+                        stat['maxClock (MHz)'] = 1000/(cp-setup)
+                        stat['efficiency (MHz/mW)'] = 1/(metrics['power__total']*cp)
             os.chdir('..')
     report.pack(side=TOP)
 
@@ -239,8 +239,17 @@ def nextAuto():
     print("generate the next report defined in default.json")
 
 def newReport():
-    print("Results:")
-    print(results)
+    d = Path("report.txt")
+    with d.open('w') as f:
+        for a,p in results.items():
+            f.write(a+"\n")
+            for b,s in p.items():
+                f.write("    "+b+"\n")
+                if b == 'NAND':
+                    f.write("        "+str(s)+"\n")
+                else:
+                    for c,n in s.items():
+                        f.write("        "+c+" : "+str(n)+"\n")
 
 frm = ttk.Frame(root, padding=10)
 frm.pack()

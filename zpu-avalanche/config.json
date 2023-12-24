@@ -2,7 +2,7 @@
     "DESIGN_NAME": "zpu_core",
     "VERILOG_FILES": ["zpu_defines.sv","zpu_alu.sv","zpu_core.sv","zpu_rom.sv"],
     "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 16.3,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

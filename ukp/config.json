@@ -2,7 +2,7 @@
     "DESIGN_NAME": "ukp",
     "VERILOG_FILES": ["usb_hid_host_rom.v","usb_hid_host.v"],
     "CLOCK_PORT": "usbclk",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 7.5,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

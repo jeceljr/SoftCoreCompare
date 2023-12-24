@@ -2,7 +2,7 @@
     "DESIGN_NAME": "j0",
     "VERILOG_FILES": ["j0.v"],
     "CLOCK_PORT": "sys_clk_i",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 18,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

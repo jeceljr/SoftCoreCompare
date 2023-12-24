@@ -2,7 +2,7 @@
     "DESIGN_NAME": "VexRiscv",
     "VERILOG_FILES": ["VexRiscv_MinDebugCache.v"],
     "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 16.5,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,

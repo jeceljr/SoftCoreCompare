@@ -233,7 +233,10 @@ it is even easy to change the number of pipeline stages.
 Many projects use the translated Verilog version of the processor, like the
 management system in the [repository for Global Foundaries 180nm](https://github.com/efabless/caravel_mgmt_soc_gf180mcu.git)
 version of the Caravel "harness" for open source ASIC design. The Verilog file was
-copied from the *verilog/rtl/* directory.
+copied from the *verilog/rtl/* directory. Commented out the lines involving
+"IBusCachedPlugin_cache_io_cpu_fetch_isRemoved" since Yosys was complaining about
+it not being driven (when called from OpenLane). Same thing for everything connected
+to "IBusCachedPlugin_mmuBus_rsp_bypassTranslation".
 
 ### DarkRiscv
 

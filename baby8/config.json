@@ -2,7 +2,7 @@
     "DESIGN_NAME": "baby8_datapath",
     "VERILOG_FILES": ["baby8_datapath.v"],
     "CLOCK_PORT": "clock",
-    "CLOCK_PERIOD": 100,
+    "CLOCK_PERIOD": 17.5,
     "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,
