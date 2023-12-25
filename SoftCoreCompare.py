@@ -133,6 +133,8 @@ def collectFPGAs():
                    pconf = json.loads(conf.read())
                for b,f in fpgas.items():
                    if f['sel'].get():
+                       status.set(a+":"+b)
+                       statusLabel.update_idletasks()
                        if a not in results:
                            results[a] = {}
                        if b not in results[a]:
@@ -142,6 +144,8 @@ def collectFPGAs():
     print("Unknown Cells (please fix program if not empty):")
     print(unknown_cells)
     report.pack(side=TOP)
+    status.set("")
+    statusLabel.update_idletasks()
 
 def collectNAND():
     for a,p in projects.items():
@@ -155,6 +159,8 @@ def collectNAND():
                     results[a] = {}
                 if 'NAND' not in results[a]:
                     results[a]['NAND'] = 0
+                status.set(a)
+                statusLabel.update_idletasks()
                 design = ys.Design()
                 for vf in pconf['VERILOG_FILES']:
                     if vf[-3:] == ".sv":
@@ -188,6 +194,8 @@ def collectNAND():
                             unknown_cells[a] = ct
             os.chdir('..')
     report.pack(side=TOP)
+    status.set("")
+    statusLabel.update_idletasks()
 
 def collectASIC():
     for a,p in projects.items():
@@ -202,6 +210,8 @@ def collectASIC():
                 if 'ASIC' not in results[a]:
                     results[a]['ASIC'] = {}
                 stat = results[a]['ASIC']
+                status.set(a)
+                statusLabel.update_idletasks()
                 r = Path('runs/compare/final/metrics.json')
                 if not r.is_file():
                     Classic = Flow.factory.get("Classic")
@@ -231,6 +241,8 @@ def collectASIC():
                         stat['efficiency (MHz/mW)'] = 1/(metrics['power__total']*cp)
             os.chdir('..')
     report.pack(side=TOP)
+    status.set("")
+    statusLabel.update_idletasks()
 
 def allAuto():
     print("generate all automatic reports from default.json")
@@ -258,22 +270,26 @@ select = ttk.Frame(frm)
 select.pack(side=TOP)
 c1 = ttk.Frame(select)
 c1.pack(side=LEFT,fill=Y,expand=1)
-ttk.Label(c1, text="   Selected FPGAs   ").pack(side=TOP)
+ttk.Label(c1, text="   Selected FPGAs   ", padding=5).pack(side=TOP)
 for n,f in fpgas.items():
     ttk.Checkbutton(c1, text=n, variable=f['sel'], onvalue=True, offvalue=False,command=clearRes).pack(side=TOP,fill=X,expand=1)
 c2 = ttk.Frame(select)
 c2.pack(side=LEFT)
-ttk.Label(c2, text="   Selected Soft Cores   ").pack(side=TOP)
+ttk.Label(c2, text="   Selected Soft Cores   ", padding=5).pack(side=TOP)
 for n,p in projects.items():
     ttk.Checkbutton(c2, text=n, variable=p['sel'], onvalue=True, offvalue=False,command=clearRes).pack(side=TOP,fill=X,expand=1)
-collect = ttk.Frame(frm)
+collect = ttk.Frame(frm, padding=10)
 collect.pack(side=TOP)
 ttk.Button(collect, text="Collect FPGA data", command=collectFPGAs).pack(side=LEFT)
 ttk.Button(collect, text="Collect NAND data", command=collectNAND).pack(side=LEFT)
 if asics:
     ttk.Button(collect, text="Collect ASIC data", command=collectASIC).pack(side=LEFT)
+status = StringVar()
+status.set("")
+statusLabel = ttk.Label(frm, textvariable=status, padding=2)
+statusLabel.pack(side=TOP)
 ttk.Button(frm, text="Quit", command=root.destroy).pack(side=TOP)
-report = ttk.Frame(frm)
+report = ttk.Frame(frm, padding=10)
 report.pack(side=TOP)
 ttk.Button(report, text="All Auto", command=allAuto).pack(side=LEFT)
 ttk.Button(report, text="Next Auto", command=nextAuto).pack(side=LEFT)
