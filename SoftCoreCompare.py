@@ -86,10 +86,13 @@ numboxes = max(len(fpgas),len(projects))
 
 results = {}
 unknown_cells = {}
+rptConfig = {}
+nextAutoRpt = 0
 
 def clearRes():
     results.clear()
     report.pack_forget()
+    nextAutoRpt = 0
 
 def collectFPGA(proj,pconf,fname,f,res):
     design = ys.Design()
@@ -229,7 +232,7 @@ def collectASIC():
                         stat['die_width (µm)'] = float(dbox[2])-float(dbox[0])
                         stat['die_height (µm)'] = float(dbox[3])-float(dbox[1])
                         stat['core_width (µm)'] = float(cbox[2])-float(cbox[0])
-                        stat['core_height(µm)'] = float(cbox[3])-float(cbox[1])
+                        stat['core_height (µm)'] = float(cbox[3])-float(cbox[1])
                         setup = metrics['timing__setup__ws__corner:max_ss_100C_1v60']
                         cp = pconf['CLOCK_PERIOD']
                         try:
@@ -245,14 +248,43 @@ def collectASIC():
     statusLabel.update_idletasks()
 
 def allAuto():
-    print("generate all automatic reports from default.json")
+    global rtpConfig
+    for r in defaults['autogen']:
+        rptConfig = r
+        genReport()
 
 def nextAuto():
-    print("generate the next report defined in default.json")
+    global rptConfig, nextAutoRpt
+    a = defaults['autogen']
+    if len(a) > nextAutoRpt:
+        rtpConfig = a[nextAutoRpt]
+        nextAutoRpt += 1
+        editReportConf()
 
 def newReport():
-    d = Path("report.txt")
+    global rtpConfig
+    rtpConfig = {'fileName':"xxx.tex",'label':"",'caption':"",'type':"text"}
+    rtpConfig['fpgas'] = fpgas.keys()
+    rptConfig['projects'] = projects.keys()
+    rtpConfig['fpgaStats'] = ['lut','reg','dsp','dmem','bmem']
+    rtpConfig['nands'] = True
+    rtpConfig['asics'] = True
+    rtpConfig['asicStats'] = ['power (W)','die_area (µm²)','core_area (µm²)',
+                              'die_width (µm)','die_height (µm)','core_width (µm)','core_height (µm)',
+                              'actualClock (MHz)','maxClock (MHz)','efficiency (MHz/mW)']
+    editReportConf()
+
+rpto = {}
+
+def endEditRptConf():
+    rpto.pack_forget()
+    rpto.destroy()
+
+def genReport():
+    d = Path(rtpConfig['fileName'])
     with d.open('w') as f:
+        print(rtpConfig['label']+"\n")
+        print(rtpConfig['caption']+"\n\n")
         for a,p in results.items():
             f.write(a+"\n")
             for b,s in p.items():
@@ -262,9 +294,27 @@ def newReport():
                 else:
                     for c,n in s.items():
                         f.write("        "+c+" : "+str(n)+"\n")
+                        
+def editReportConf():
+    global rpto
+    rpto = ttk.Frame(root, padding=10)
+    rpto.pack(side=LEFT)
+    ttk.Button(rpto, text="CANCEL", command=endEditRptConf).pack(side=TOP)
+    row = ttk.Frame(rpto, padding=3)
+    row.pack(side=TOP)
+    ttk.Label(row, text="file name: ").pack(side=LEFT)
+    ttk.Entry(row,width=80).pack(side=LEFT)
+    row = ttk.Frame(rpto, padding=3)
+    row.pack(side=TOP)
+    ttk.Label(row, text="label: ").pack(side=LEFT)
+    ttk.Entry(row,width=80).pack(side=LEFT)
+    row = ttk.Frame(rpto, padding=3)
+    row.pack(side=TOP)
+    ttk.Label(row, text="caption: ").pack(side=LEFT)
+    ttk.Entry(row,width=80).pack(side=LEFT)
 
 frm = ttk.Frame(root, padding=10)
-frm.pack()
+frm.pack(side=LEFT)
 root.title("Soft Core Compare")
 select = ttk.Frame(frm)
 select.pack(side=TOP)
@@ -284,11 +334,13 @@ ttk.Button(collect, text="Collect FPGA data", command=collectFPGAs).pack(side=LE
 ttk.Button(collect, text="Collect NAND data", command=collectNAND).pack(side=LEFT)
 if asics:
     ttk.Button(collect, text="Collect ASIC data", command=collectASIC).pack(side=LEFT)
+stline = ttk.Frame(frm, padding=3)
+stline.pack(side=TOP)
 status = StringVar()
 status.set("")
-statusLabel = ttk.Label(frm, textvariable=status, padding=2)
-statusLabel.pack(side=TOP)
-ttk.Button(frm, text="Quit", command=root.destroy).pack(side=TOP)
+statusLabel = ttk.Label(stline, textvariable=status, padding=2)
+statusLabel.pack(side=LEFT)
+ttk.Button(stline, text="Quit", command=root.destroy).pack(side=LEFT)
 report = ttk.Frame(frm, padding=10)
 report.pack(side=TOP)
 ttk.Button(report, text="All Auto", command=allAuto).pack(side=LEFT)
