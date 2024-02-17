@@ -1,5 +1,7 @@
 # SoftCoreCompare
 
+This project generated the data used in the article ["Design and Evaluation of Open-Source Soft-Core Processors"](https://www.mdpi.com/2079-9292/13/4/781).
+
 Running the program SoftCoreCompare.py will eventually use a dialog box to select a
 number of various RISC-C and other small soft cores to be compared  when synthesized
 by Yosys to several FPGAs (and later translated into just NAND gates and also into
